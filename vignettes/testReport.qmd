@@ -1,0 +1,52 @@
+---
+title: "testReport"
+vignette: >
+  %\VignetteIndexEntry{testReport}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: setup
+library(STAT6191Ass2)
+
+set.seed(123)
+
+clean_results <- simulate_clean(
+  n = 250,
+  reps = 1000,
+  rate = 1
+)
+
+contaminated_results <- simulate_contaminated(
+  n = 250,
+  reps = 1000,
+  contamination_prop = 0.10
+)
+
+clean_results
+contaminated_results
+```
+
+```{r}
+#| label: combine
+clean_results$setting <- "Clean data"
+contaminated_results$setting <- "Contaminated data"
+
+section1_results <- rbind(clean_results, contaminated_results)
+
+section1_results <- section1_results[, c(
+  "setting",
+  "estimator",
+  "mean_estimate",
+  "bias",
+  "mcsd",
+  "mse"
+)]
+
+section1_results
+```
